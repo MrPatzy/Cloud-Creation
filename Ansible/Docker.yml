@@ -1,0 +1,43 @@
+---
+  - name: Config web VM with Docker - Activity Playbook (W13D1)
+    hosts: webservers
+    become: true
+    tasks:
+
+      - name: Uninstall apache2
+        apt:
+          name: apache2
+          state: absent
+
+
+      - name: Install Docker.io
+        apt:
+          force_apt_get: yes
+          update_cache: yes
+          name: docker.io
+          state: present
+
+      - name: Install Python3-pip
+        apt:
+          force_apt_get: yes
+          name: python3-pip
+          state: present
+
+      - name: Install Docker
+        pip:
+          name: docker
+          state: present
+
+      - name: download and launch a docker web conatiner
+        docker_container:
+          name: dvwa
+          image: cyberxsecurity/dvwa
+          state: started
+          published_ports: 80:80
+          restart_policy: always
+
+      - name: Enable Docker service
+        systemd:
+          name: docker
+          enabled: yes
+

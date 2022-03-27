@@ -1,0 +1,12 @@
+  GNU nano 4.8                                           my-playbook.yml                                                     ---
+  - name: My first playbook
+    hosts: webservers
+    become: true
+    tasks:
+
+    - name: Install Apache httpd (state=present is optional)
+      apt:
+        name: apache2
+        state: present
+
+
